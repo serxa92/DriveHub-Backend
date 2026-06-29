@@ -9,7 +9,7 @@ const {
   addCar,
 } = require("../controllers/auth.controller");
 const auth = require("../middlewares/auth");
-const upload = require("../middlewares/upload");
+const { upload } = require("../middlewares/upload");
 
 //Registramos un usuario nuevo (con subida de imagen a Cloudinary)
 router.post("/register", upload.single("image"), register);

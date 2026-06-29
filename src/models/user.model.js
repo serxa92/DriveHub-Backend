@@ -20,7 +20,15 @@ const userSchema = new Schema(
       minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
     },
     role: { type: String, enum: ["user", "admin"], default: "user" },
-    image: { type: String, default: "" },
+    image: {
+      type: String,
+      default: "",
+    },
+
+    imagePublicId: {
+      type: String,
+      default: "",
+    },
     cars: [{ type: mongoose.Schema.Types.ObjectId, ref: "Car" }], //Array de coches asociados al usuario
   },
   { timestamps: true, versionKey: false },

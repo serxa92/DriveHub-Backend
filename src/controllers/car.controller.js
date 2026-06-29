@@ -16,27 +16,34 @@ const createCar = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // 1) Crear coche
+    const images = req.files
+      ? req.files.map((file, index) => ({
+          url: file.path,
+          publicId: file.filename,
+          isCover: index === 0,
+        }))
+      : [];
+
     const savedCar = await Car.create({
       ...req.body,
+      price: Number(req.body.price),
+      year: Number(req.body.year),
+      mileage: Number(req.body.mileage),
+      images,
       owner: userId,
     });
 
-    // 2) Guardar referencia en el usuario SIN duplicados
-    await User.findByIdAndUpdate(
-      userId,
-      { $addToSet: { cars: savedCar._id } }, // evita duplicados
-      { new: true },
-    );
-
     return res.status(201).json({
       data: savedCar,
-      info: `Coche creado el: ${new Date(savedCar.createdAt).toLocaleDateString("es-ES")}`,
+      info: `Car created on: ${new Date(
+        savedCar.createdAt
+      ).toLocaleDateString("en-US")}`,
     });
   } catch (error) {
-    console.error("❌Error al crear el coche:", error);
+    console.error("Error creating car:", error);
+
     return res.status(500).json({
-      error: "❌Error al crear el coche",
+      error: "Error creating car",
       detail: error.message,
     });
   }

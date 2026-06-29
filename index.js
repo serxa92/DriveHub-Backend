@@ -5,6 +5,8 @@ const connectDB = require("./src/config/db");
 const carsRouter = require("./src/routes/car.routes");
 const authRoutes = require("./src/routes/auth");
 const cors = require("cors");
+const clientRoutes = require("./src/routes/client.routes");
+const saleRoutes = require("./src/routes/sale.routes");
 
 //1. Creamos instancia con Express
 const app = express();
@@ -21,6 +23,8 @@ connectDB();
 //4. Rutas
 app.use("/cars", carsRouter);
 app.use("/auth", authRoutes);
+app.use("/clients", clientRoutes);
+app.use("/sales", saleRoutes);
 
 //5. Rutas de prueba
 app.get("/", (req, res) => {

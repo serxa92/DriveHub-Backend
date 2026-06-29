@@ -1,3 +1,7 @@
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
 const clientSchema = new Schema(
   {
     name: {
@@ -34,12 +38,7 @@ const clientSchema = new Schema(
 
     status: {
       type: String,
-      enum: [
-        "Interested",
-        "Contacted",
-        "Negotiating",
-        "Customer",
-      ],
+      enum: ["Interested", "Contacted", "Negotiating", "Customer"],
       default: "Interested",
     },
 
@@ -53,3 +52,5 @@ const clientSchema = new Schema(
     versionKey: false,
   }
 );
+
+module.exports = mongoose.model("Client", clientSchema);

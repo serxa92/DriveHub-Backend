@@ -2,23 +2,32 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
 
-//Configuramos Cloudinary con las variables de entorno
+// Configuración de Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-//Configuramos el almacenamiento en Cloudinary (carpeta y formatos permitidos)
+// Almacenamiento
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "users",
-    allowed_formats: ["jpg", "png", "jpeg", "gif"],
+  params: async (req, file) => ({
+    folder: "drivehub",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    public_id: `${Date.now()}-${file.originalname.split(".")[0]}`,
+  }),
+});
+
+// Middleware Multer
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB
   },
 });
 
-//Creamos el middleware de subida con multer
-const upload = multer({ storage });
-
-module.exports = upload;
+module.exports = {
+  upload,
+  cloudinary,
+};
