@@ -1,5 +1,6 @@
 const Car = require("../models/car.model");
 const User = require("../models/user.model");
+const { cloudinary } = require("../middlewares/upload");
 
 // GET /cars
 const getCars = async (req, res) => {
@@ -94,12 +95,27 @@ const deleteCarById = async (req, res) => {
     const deletedCar = await Car.findByIdAndDelete(id);
 
     if (!deletedCar) {
-      return res.status(404).json({ message: "Coche no encontrado❌" });
+      return res.status(404).json({
+        message: "Car not found",
+      });
     }
 
-    res.status(200).json({ message: "Coche eliminado correctamente 🗑️" });
+    if (deletedCar.images && deletedCar.images.length > 0) {
+      await Promise.all(
+        deletedCar.images.map((image) =>
+          cloudinary.uploader.destroy(image.publicId)
+        )
+      );
+    }
+
+    return res.status(200).json({
+      message: "Car deleted successfully",
+    });
   } catch (error) {
-    res.status(500).json({ error: "❌Error al eliminar el coche" });
+    return res.status(500).json({
+      message: "Error deleting car",
+      error: error.message,
+    });
   }
 };
 
