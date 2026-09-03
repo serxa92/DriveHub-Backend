@@ -69,22 +69,115 @@ const getCarById = async (req, res) => {
 // =======================
 const updateCarById = async (req, res) => {
   try {
-    const updatedCar = await Car.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const car = await Car.findById(req.params.id);
 
-    if (!updatedCar) {
+    if (!car) {
       return res.status(404).json({ message: "Coche no encontrado❌" });
     }
+
+    const { images, ...updates } = req.body;
+    Object.assign(car, updates);
+
+    if (req.files && req.files.length > 0) {
+      const hasCover = car.images.some((image) => image.isCover);
+      const newImages = req.files.map((file, index) => ({
+        url: file.path,
+        publicId: file.filename,
+        isCover: !hasCover && index === 0,
+      }));
+
+      car.images.push(...newImages);
+    }
+
+    const updatedCar = await car.save();
 
     return res.status(200).json(updatedCar);
   } catch (error) {
     res.status(500).json({
-      error: "❌Error al actualizar el coche",
+      error: "❌ Error al actualizar el coche",
     });
   }
 };
+
+// DELETE /cars/:id/images
+const deleteCarImage = async (req, res) => {
+  try {
+    const { publicId } = req.body;
+
+    if (!publicId) {
+      return res.status(400).json({ message: "publicId es obligatorio" });
+    }
+
+    const car = await Car.findById(req.params.id);
+
+    if (!car) {
+      return res.status(404).json({ message: "Coche no encontrado ❌" });
+    }
+
+    const imageIndex = car.images.findIndex(
+      (image) => image.publicId === publicId,
+    );
+
+    if (imageIndex === -1) {
+      return res.status(404).json({ message: "Imagen no encontrada ❌" });
+    }
+
+    const wasCover = car.images[imageIndex].isCover;
+    await cloudinary.uploader.destroy(publicId);
+    car.images.splice(imageIndex, 1);
+
+    if (wasCover && car.images.length > 0) {
+      car.images.forEach((image) => {
+        image.isCover = false;
+      });
+      car.images[0].isCover = true;
+    }
+
+    const updatedCar = await car.save();
+    return res.status(200).json(updatedCar);
+  } catch (error) {
+    return res.status(500).json({
+      error: "❌ Error al eliminar la imagen",
+    });
+  }
+};
+
+// PUT /cars/:id/images/cover
+const setCarCover = async (req, res) => {
+  try {
+    const { publicId } = req.body;
+
+    if (!publicId) {
+      return res.status(400).json({ message: "publicId es obligatorio" });
+    }
+
+    const car = await Car.findById(req.params.id);
+
+    if (!car) {
+      return res.status(404).json({ message: "Coche no encontrado ❌" });
+    }
+
+    const imageExists = car.images.some(
+      (image) => image.publicId === publicId,
+    );
+
+    if (!imageExists) {
+      return res.status(404).json({ message: "Imagen no encontrada ❌" });
+    }
+
+    car.images.forEach((image) => {
+      image.isCover = image.publicId === publicId;
+    });
+
+    const updatedCar = await car.save();
+    return res.status(200).json(updatedCar);
+  } catch (error) {
+    return res.status(500).json({
+      error: "❌ Error al cambiar la portada",
+    });
+  }
+};
+
 // =======================
 // DELETE /cars/:id
 // =======================
@@ -130,7 +223,7 @@ const getCarByBrand = async (req, res) => {
     if (cars.length === 0) {
       return res
         .status(404)
-        .json({ message: "No hay coches de esa marca en la base de datos❌" });
+        .json({ message: "No hay coches de esa marca en la base de datos ❌" });
     }
     return res.status(200).json(cars);
   } catch (error) {
@@ -143,6 +236,8 @@ module.exports = {
   createCar,
   getCarById,
   updateCarById,
+  deleteCarImage,
+  setCarCover,
   deleteCarById,
   getCarByBrand,
 };

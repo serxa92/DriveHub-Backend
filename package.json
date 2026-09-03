@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "seed": "node .src/utils/seeds/cars.seed.js"
+    "seed": "node src/utils/seedCars.js",
+    "seed:clients": "node src/utils/seedClients.js",
+    "seed:sales": "node src/utils/seedSales.js",
+    "seed:all": "node src/utils/seedAll.js"
   },
   "keywords": [],
   "author": "Sergio Agulla <serxa92@hotmail.com>",

@@ -1,0 +1,101 @@
+name,email,phone,city,status,notes
+Laura Gómez,laura.gomez@gmail.com,612340001,Madrid,Interested,Busca un coche híbrido
+Carlos Martínez,carlos.martinez@outlook.com,623450002,Barcelona,Interested,Prefiere cambio automático
+Marta Sánchez,marta.sanchez@yahoo.es,634560003,Valencia,Contacted,Pide información de financiación
+Javier López,javier.lopez@gmail.com,645670004,Sevilla,Customer,Compra completada
+Ana Fernández,ana.fernandez@icloud.com,656780005,Zaragoza,Negotiating,Valora dos modelos
+Sergio Rodríguez,sergio.rodriguez@hotmail.com,667890006,Málaga,Interested,Necesita un coche familiar
+Lucía Pérez,lucia.perez@gmail.com,678900007,Murcia,Contacted,Llamar por la tarde
+David García,david.garcia@outlook.com,689010008,Bilbao,Customer,Cliente recurrente
+Elena Ruiz,elena.ruiz@yahoo.es,711120009,Alicante,Interested,Busca bajo consumo
+Pablo Moreno,pablo.moreno@gmail.com,722230010,Valladolid,Contacted,Quiere hacer una prueba
+Sara Jiménez,sara.jimenez@icloud.com,612340011,Vigo,Negotiating,Revisando condiciones
+Álvaro Muñoz,alvaro.munoz@hotmail.com,623450012,Gijón,Customer,Entrega realizada
+Cristina Navarro,cristina.navarro@gmail.com,634560013,A Coruña,Interested,Interesada en un SUV
+Daniel Romero,daniel.romero@outlook.com,645670014,Granada,Contacted,Ha enviado documentación
+Irene Torres,irene.torres@yahoo.es,656780015,Córdoba,Customer,Muy satisfecha con la compra
+Miguel Vázquez,miguel.vazquez@gmail.com,667890016,Salamanca,Interested,Busca vehículo diésel
+Natalia Ramos,natalia.ramos@icloud.com,678900017,Santander,Negotiating,Pendiente de tasación
+Jorge Molina,jorge.molina@hotmail.com,689010018,Pamplona,Contacted,Visita prevista esta semana
+Paula Ortega,paula.ortega@gmail.com,711120019,Toledo,Customer,Operación cerrada
+Adrián Delgado,adrian.delgado@outlook.com,722230020,Badajoz,Interested,Primera toma de contacto
+Beatriz Castro,beatriz.castro@yahoo.es,612340021,Madrid,Interested,Busca un coche urbano
+Rubén Ortiz,ruben.ortiz@gmail.com,623450022,Barcelona,Interested,Presupuesto ajustado
+Claudia Rubio,claudia.rubio@icloud.com,634560023,Valencia,Contacted,Interesada en renting
+Marcos Sanz,marcos.sanz@hotmail.com,645670024,Sevilla,Customer,Compra financiada
+Andrea Iglesias,andrea.iglesias@gmail.com,656780025,Zaragoza,Negotiating,Comparando ofertas
+Víctor Medina,victor.medina@outlook.com,667890026,Málaga,Interested,Quiere un vehículo eléctrico
+Noelia Garrido,noelia.garrido@yahoo.es,678900027,Murcia,Contacted,Enviar catálogo actualizado
+Raúl Santos,raul.santos@gmail.com,689010028,Bilbao,Customer,Recogida completada
+Alba Castillo,alba.castillo@icloud.com,711120029,Alicante,Interested,Necesita cambio automático
+Iván Prieto,ivan.prieto@hotmail.com,722230030,Valladolid,Contacted,Pendiente de confirmar visita
+Patricia Núñez,patricia.nunez@gmail.com,612340031,Vigo,Negotiating,Negociando precio final
+Mario Lozano,mario.lozano@outlook.com,623450032,Gijón,Customer,Cliente recomendado
+Rocío Cabrera,rocio.cabrera@yahoo.es,634560033,A Coruña,Interested,Busca coche con poco uso
+Héctor Blanco,hector.blanco@gmail.com,645670034,Granada,Contacted,Solicita más fotografías
+Nuria Pastor,nuria.pastor@icloud.com,656780035,Córdoba,Customer,Documentación entregada
+Óscar Márquez,oscar.marquez@hotmail.com,667890036,Salamanca,Interested,Valora entregar su coche
+Eva Rey,eva.rey@gmail.com,678900037,Santander,Negotiating,Esperando aprobación bancaria
+Guillermo Vidal,guillermo.vidal@outlook.com,689010038,Pamplona,Contacted,Interesado en garantía ampliada
+Alicia Calvo,alicia.calvo@yahoo.es,711120039,Toledo,Customer,Venta finalizada
+Samuel León,samuel.leon@gmail.com,722230040,Badajoz,Interested,Busca coche para viajar
+Inés Cano,ines.cano@icloud.com,612340041,Madrid,Interested,Prefiere etiqueta ECO
+Bruno Ferrer,bruno.ferrer@hotmail.com,623450042,Barcelona,Interested,Consulta disponibilidad
+Lorena Vega,lorena.vega@gmail.com,634560043,Valencia,Contacted,Prueba reservada
+Diego Pascual,diego.pascual@outlook.com,645670044,Sevilla,Customer,Entrega sin incidencias
+Sonia Campos,sonia.campos@yahoo.es,656780045,Zaragoza,Negotiating,Revisando financiación
+Alejandro Gallego,alejandro.gallego@gmail.com,667890046,Málaga,Interested,Busca un monovolumen
+Marina Rojas,marina.rojas@icloud.com,678900047,Murcia,Contacted,Pide llamada el viernes
+Gonzalo Peña,gonzalo.pena@hotmail.com,689010048,Bilbao,Customer,Ha comprado un compacto
+Raquel Domínguez,raquel.dominguez@gmail.com,711120049,Alicante,Interested,Quiere comparar híbridos
+Fernando Bravo,fernando.bravo@outlook.com,722230050,Valladolid,Contacted,Pendiente de respuesta
+Teresa Pardo,teresa.pardo@yahoo.es,612340051,Vigo,Negotiating,Ha realizado una oferta
+Ismael Soler,ismael.soler@gmail.com,623450052,Gijón,Customer,Financiación aprobada
+Aitana Mora,aitana.mora@icloud.com,634560053,A Coruña,Interested,Busca su primer coche
+Joaquín Esteban,joaquin.esteban@hotmail.com,645670054,Granada,Contacted,Quiere ver el vehículo
+Verónica Carmona,veronica.carmona@gmail.com,656780055,Córdoba,Customer,Venta completada
+Nicolás Herrero,nicolas.herrero@outlook.com,667890056,Salamanca,Interested,Necesita gran maletero
+Esther Crespo,esther.crespo@yahoo.es,678900057,Santander,Negotiating,Pendiente de contrato
+Cristian Caballero,cristian.caballero@gmail.com,689010058,Pamplona,Contacted,Solicita precio definitivo
+Silvia Lorenzo,silvia.lorenzo@icloud.com,711120059,Toledo,Customer,Recogida programada
+Eduardo Moya,eduardo.moya@hotmail.com,722230060,Badajoz,Interested,Interesado en un todoterreno
+Carolina Fuentes,carolina.fuentes@gmail.com,612340061,Madrid,Interested,Busca coche automático
+Manuel Arias,manuel.arias@outlook.com,623450062,Barcelona,Interested,Consulta sobre seguro
+Mónica Redondo,monica.redondo@yahoo.es,634560063,Valencia,Contacted,Ha pedido una tasación
+Alberto Segura,alberto.segura@gmail.com,645670064,Sevilla,Customer,Cliente de confianza
+Julia Benítez,julia.benitez@icloud.com,656780065,Zaragoza,Negotiating,Pendiente de firmar
+Roberto Vicente,roberto.vicente@hotmail.com,667890066,Málaga,Interested,Busca una furgoneta
+Candela Guerrero,candela.guerrero@gmail.com,678900067,Murcia,Contacted,Enviar opciones híbridas
+Enrique Santana,enrique.santana@outlook.com,689010068,Bilbao,Customer,Operación financiada
+Miriam Lozano,miriam.lozano@yahoo.es,711120069,Alicante,Interested,Prioriza la seguridad
+Francisco Acosta,francisco.acosta@gmail.com,722230070,Valladolid,Contacted,Visitará el concesionario
+Ángela Hidalgo,angela.hidalgo@icloud.com,612340071,Vigo,Negotiating,Comparando cuotas
+Juan Serrano,juan.serrano@hotmail.com,623450072,Gijón,Customer,Compra al contado
+Lidia Montero,lidia.montero@gmail.com,634560073,A Coruña,Interested,Busca coche de siete plazas
+Tomás Giménez,tomas.gimenez@outlook.com,645670074,Granada,Contacted,Pide historial del vehículo
+María Beltrán,maria.beltran@yahoo.es,656780075,Córdoba,Customer,Entrega confirmada
+Antonio Rivas,antonio.rivas@gmail.com,667890076,Salamanca,Interested,Interesado en diésel
+Isabel Cuevas,isabel.cuevas@icloud.com,678900077,Santander,Interested,Busca pocas emisiones
+José Cordero,jose.cordero@hotmail.com,689010078,Pamplona,Contacted,Quiere negociar la entrada
+Carmen Valero,carmen.valero@gmail.com,711120079,Toledo,Customer,Segunda compra
+Luis Carrasco,luis.carrasco@outlook.com,722230080,Badajoz,Negotiating,Revisando presupuesto
+Sandra Bermúdez,sandra.bermudez@yahoo.es,612340081,Madrid,Interested,Prefiere un compacto
+Pedro Aparicio,pedro.aparicio@gmail.com,623450082,Barcelona,Contacted,Prueba realizada
+Amalia Nieto,amalia.nieto@icloud.com,634560083,Valencia,Customer,Contrato firmado
+Ricardo Ros,ricardo.ros@hotmail.com,645670084,Sevilla,Interested,Busca un coche deportivo
+Belén Escudero,belen.escudero@gmail.com,656780085,Zaragoza,Contacted,Ha solicitado financiación
+Jaime Ballester,jaime.ballester@outlook.com,667890086,Málaga,Negotiating,Pendiente de aprobación
+Diana Cuenca,diana.cuenca@yahoo.es,678900087,Murcia,Customer,Vehículo entregado
+Ramón Pineda,ramon.pineda@gmail.com,689010088,Bilbao,Interested,Necesita coche para empresa
+Violeta Duran,violeta.duran@icloud.com,711120089,Alicante,Contacted,Quiere recibir novedades
+César Velasco,cesar.velasco@hotmail.com,722230090,Valladolid,Customer,Compra completada
+Emma Salas,emma.salas@gmail.com,612340091,Vigo,Interested,Busca coche pequeño
+Andrés Macías,andres.macias@outlook.com,623450092,Gijón,Interested,Valora un modelo eléctrico
+Olivia Barroso,olivia.barroso@yahoo.es,634560093,A Coruña,Contacted,Solicita una videollamada
+Gabriel Mesa,gabriel.mesa@gmail.com,645670094,Granada,Customer,Entrega esta semana
+Aurora Marco,aurora.marco@icloud.com,656780095,Córdoba,Negotiating,Ha pedido descuento
+Mateo Luque,mateo.luque@hotmail.com,667890096,Salamanca,Interested,Busca vehículo familiar
+Elsa Valle,elsa.valle@gmail.com,678900097,Santander,Contacted,Pendiente de prueba
+Hugo Roldán,hugo.roldan@outlook.com,689010098,Pamplona,Customer,Venta cerrada
+Lola Palacios,lola.palacios@yahoo.es,711120099,Toledo,Interested,Quiere un coche económico
+Martín Zamora,martin.zamora@gmail.com,722230100,Badajoz,Contacted,Primera visita realizada

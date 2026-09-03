@@ -1,0 +1,41 @@
+carIndex,clientEmail,salePrice,paymentMethod,status,notes
+1,laura.gomez@gmail.com,21500,Financing,Completed,Financiación aprobada
+2,carlos.martinez@outlook.com,18000,Bank transfer,Completed,Transferencia recibida
+3,marta.sanchez@yahoo.es,17500,Financing,Pending,Pendiente de firma
+4,javier.lopez@gmail.com,13600,Cash,Completed,Entrega realizada
+5,ana.fernandez@icloud.com,14500,Financing,Cancelled,Cliente cambió de decisión
+6,sergio.rodriguez@hotmail.com,16000,Bank transfer,Completed,Venta sin incidencias
+7,lucia.perez@gmail.com,24500,Financing,Completed,Cuotas confirmadas
+8,david.garcia@outlook.com,28200,Bank transfer,Pending,Esperando transferencia
+9,elena.ruiz@yahoo.es,28900,Financing,Completed,Documentación completada
+10,pablo.moreno@gmail.com,13000,Cash,Completed,Pago realizado
+11,sara.jimenez@icloud.com,24500,Financing,Completed,Operación financiada
+12,alvaro.munoz@hotmail.com,18500,Bank transfer,Completed,Recogida programada
+13,cristina.navarro@gmail.com,15500,Cash,Completed,Vehículo entregado
+14,daniel.romero@outlook.com,23500,Financing,Cancelled,Financiación rechazada
+15,irene.torres@yahoo.es,26900,Bank transfer,Completed,Transferencia confirmada
+16,miguel.vazquez@gmail.com,10900,Cash,Pending,Pendiente de documentación
+17,natalia.ramos@icloud.com,16500,Financing,Completed,Contrato firmado
+18,jorge.molina@hotmail.com,10700,Cash,Completed,Pago en concesionario
+19,paula.ortega@gmail.com,31300,Financing,Completed,Entrada abonada
+20,adrian.delgado@outlook.com,28500,Bank transfer,Completed,Venta finalizada
+21,beatriz.castro@yahoo.es,32500,Financing,Completed,Plan de pagos aceptado
+22,ruben.ortiz@gmail.com,15600,Bank transfer,Completed,Entrega esta semana
+23,claudia.rubio@icloud.com,15400,Financing,Pending,Esperando aprobación bancaria
+24,marcos.sanz@hotmail.com,24600,Cash,Completed,Compra al contado
+25,andrea.iglesias@gmail.com,23500,Financing,Completed,Garantía incluida
+26,victor.medina@outlook.com,25500,Bank transfer,Cancelled,Operación cancelada
+27,noelia.garrido@yahoo.es,21600,Financing,Completed,Financiación cerrada
+28,raul.santos@gmail.com,19000,Cash,Completed,Cliente satisfecho
+29,alba.castillo@icloud.com,20500,Bank transfer,Completed,Importe recibido
+30,ivan.prieto@hotmail.com,36200,Financing,Completed,Seguro incluido
+31,patricia.nunez@gmail.com,18100,Financing,Pending,Falta la última nómina
+32,mario.lozano@outlook.com,29400,Bank transfer,Completed,Recogida confirmada
+33,rocio.cabrera@yahoo.es,26400,Financing,Completed,Cuota mensual acordada
+34,hector.blanco@gmail.com,27300,Cash,Completed,Venta directa
+35,nuria.pastor@icloud.com,19400,Bank transfer,Completed,Transferencia verificada
+36,oscar.marquez@hotmail.com,18800,Financing,Completed,Contrato completado
+37,eva.rey@gmail.com,27400,Financing,Cancelled,Cliente eligió otro modelo
+38,guillermo.vidal@outlook.com,13600,Cash,Completed,Entrega inmediata
+39,alicia.calvo@yahoo.es,12900,Bank transfer,Pending,Transferencia en trámite
+40,samuel.leon@gmail.com,10200,Financing,Completed,Operación completada

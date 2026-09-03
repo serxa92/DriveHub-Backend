@@ -1,0 +1,101 @@
+brand,model,year,mileage,price,fuel,transmission,status,notes
+Toyota,Corolla,2021,44500,21900,Hybrid,Automatic,Available,Mantenimiento al día
+Volkswagen,Golf,2019,78200,18400,Diesel,Manual,Available,Único propietario
+SEAT,León,2020,61500,17900,Gasoline,Manual,Available,Muy cuidado
+Ford,Focus,2018,89300,13900,Diesel,Manual,Available,Revisión recién hecha
+Renault,Mégane,2019,74600,14800,Diesel,Automatic,Available,Buen estado general
+Peugeot,308,2020,53800,16500,Gasoline,Manual,Available,Interior impecable
+BMW,320d,2018,102000,24900,Diesel,Automatic,Reserved,Libro de revisiones
+Mercedes-Benz,C 220 d,2019,88500,28700,Diesel,Automatic,Available,Equipamiento completo
+Audi,A4,2020,69700,29500,Diesel,Automatic,Available,Siempre en garaje
+Skoda,Octavia,2017,118000,13200,Diesel,Manual,Sold,Consumo muy bajo
+Hyundai,Tucson,2021,49600,24900,Hybrid,Automatic,Available,Garantía vigente
+Kia,Sportage,2019,67200,18900,Gasoline,Manual,Reserved,Neumáticos nuevos
+Nissan,Qashqai,2018,81400,15900,Gasoline,Manual,Available,Cámara trasera
+Mazda,CX-5,2020,57900,23900,Gasoline,Automatic,Available,Acabado alto
+Honda,Civic,2022,28700,27400,Hybrid,Automatic,Available,Como nuevo
+Opel,Astra,2017,96400,11200,LPG,Manual,Available,Etiqueta ECO
+Dacia,Duster,2021,51300,16800,LPG,Manual,Available,Ideal para familia
+Fiat,500,2018,72500,10900,LPG,Manual,Reserved,Fácil de aparcar
+Volvo,XC60,2019,93200,31900,Diesel,Automatic,Available,Conducción muy cómoda
+Lexus,UX 250h,2020,60400,28900,Hybrid,Automatic,Sold,Sistema híbrido revisado
+Tesla,Model 3,2021,48100,32900,Electric,Automatic,Available,Gran autonomía
+Renault,Zoe,2020,38600,15900,Electric,Automatic,Available,Batería en propiedad
+Nissan,Leaf,2019,52700,15700,Electric,Automatic,Available,Perfecto para ciudad
+Volkswagen,ID.3,2021,35400,24900,Electric,Automatic,Reserved,Carga rápida
+Hyundai,Kona Electric,2020,46900,23900,Electric,Automatic,Available,Autonomía real excelente
+Kia,e-Niro,2021,42100,25900,Electric,Automatic,Available,Muy eficiente
+Peugeot,e-208,2022,24600,21900,Electric,Automatic,Available,Pocos kilómetros
+Opel,Corsa-e,2021,33900,19400,Electric,Automatic,Available,Ideal para uso diario
+BMW,i3,2019,58400,20900,Electric,Automatic,Available,Interior muy cuidado
+Mercedes-Benz,EQA 250,2022,31500,36900,Electric,Automatic,Sold,Equipamiento premium
+Toyota,Yaris,2021,39800,18400,Hybrid,Automatic,Reserved,Consumo urbano mínimo
+Toyota,RAV4,2020,71200,29900,Hybrid,Automatic,Available,Amplio y fiable
+Ford,Kuga,2021,52600,26900,Hybrid,Automatic,Available,Revisión oficial
+Honda,CR-V,2019,68400,27800,Hybrid,Automatic,Available,Mucho espacio interior
+Hyundai,Ioniq,2020,55700,19800,Hybrid,Automatic,Available,Muy bajo consumo
+Kia,Niro,2019,73900,19200,Hybrid,Automatic,Available,Historial completo
+Lexus,NX 300h,2018,94800,27900,Hybrid,Automatic,Reserved,Acabado Luxury
+Renault,Clio,2021,46200,13900,LPG,Manual,Available,Económico de mantener
+Dacia,Sandero,2022,29700,13200,LPG,Manual,Available,Etiqueta ECO
+Fiat,Tipo,2018,83700,10500,LPG,Manual,Sold,Maletero amplio
+Dacia,Jogger,2022,36100,18900,LPG,Manual,Available,Siete plazas
+SsangYong,Tivoli,2019,65400,14900,LPG,Manual,Available,Buena altura libre
+Volkswagen,Polo,2020,48900,14900,Gasoline,Manual,Reserved,Perfecto para ciudad
+SEAT,Ibiza,2019,62300,12800,Gasoline,Manual,Available,Conectividad completa
+Skoda,Fabia,2018,77100,10900,Gasoline,Manual,Available,Revisiones demostrables
+Ford,Fiesta,2019,58500,11900,Gasoline,Manual,Available,Ágil y económico
+Renault,Clio,2020,51400,12900,Gasoline,Manual,Available,Estado excelente
+Peugeot,208,2021,40700,15400,Gasoline,Automatic,Available,Acabado Allure
+Citroën,C3,2017,86200,9200,Gasoline,Manual,Sold,Confortable en ciudad
+Opel,Corsa,2020,53300,12700,Gasoline,Manual,Reserved,Recién revisado
+BMW,118i,2019,64800,20900,Gasoline,Automatic,Available,Paquete deportivo
+Mercedes-Benz,A 180,2020,57100,23900,Gasoline,Automatic,Available,Interior premium
+Audi,A3,2019,70300,21800,Gasoline,Automatic,Available,Acabado S line
+MINI,Cooper,2018,67600,17400,Gasoline,Manual,Available,Diseño muy cuidado
+Mazda,Mazda3,2020,45800,19200,Gasoline,Manual,Available,Motor atmosférico fiable
+Honda,Jazz,2019,53900,14200,Gasoline,Automatic,Available,Muy práctico
+Suzuki,Swift,2021,32200,14900,Gasoline,Manual,Available,Ligero y eficiente
+Hyundai,i20,2020,44600,13300,Gasoline,Manual,Reserved,Garantía de fábrica
+Kia,Rio,2018,73500,10500,Gasoline,Manual,Available,Mantenimiento económico
+Nissan,Micra,2017,82400,9400,Gasoline,Manual,Sold,Buen coche urbano
+Volkswagen,Passat,2018,109000,18900,Diesel,Automatic,Available,Ideal para carretera
+Skoda,Superb,2019,97200,21800,Diesel,Automatic,Available,Espacio sobresaliente
+Ford,Mondeo,2017,126000,12800,Diesel,Manual,Available,Muy cómodo en viajes
+Peugeot,508,2020,79500,22800,Diesel,Automatic,Available,Diseño y confort
+Renault,Talisman,2018,104000,15900,Diesel,Automatic,Reserved,Equipamiento completo
+Volvo,S60,2019,91300,24900,Diesel,Automatic,Available,Alta seguridad
+BMW,520d,2018,117000,25900,Diesel,Automatic,Available,Revisiones oficiales
+Mercedes-Benz,E 220 d,2019,106000,29900,Diesel,Automatic,Available,Excelente para viajar
+Audi,A6,2020,88400,32900,Diesel,Automatic,Available,Tecnología avanzada
+Jaguar,XF,2017,121000,21900,Diesel,Automatic,Sold,Conducción refinada
+Land Rover,Discovery Sport,2019,98600,27800,Diesel,Automatic,Available,Siete plazas
+Land Rover,Range Rover Evoque,2020,74200,33900,Diesel,Automatic,Reserved,Acabado cuidado
+Jeep,Compass,2018,90200,18400,Diesel,Manual,Available,Buen comportamiento fuera de pista
+Alfa Romeo,Stelvio,2019,81100,29400,Diesel,Automatic,Available,Conducción deportiva
+Fiat,500X,2020,56800,16900,Gasoline,Manual,Available,Posición elevada
+Cupra,Formentor,2021,43700,28900,Gasoline,Automatic,Available,Respuesta deportiva
+Volkswagen,Tiguan,2019,85700,23900,Diesel,Automatic,Available,Maletero generoso
+SEAT,Ateca,2020,62400,20900,Gasoline,Manual,Available,Muy equilibrado
+Skoda,Karoq,2018,93800,18800,Diesel,Manual,Reserved,Práctico y espacioso
+Ford,Puma,2021,38900,19200,Gasoline,Manual,Sold,Diseño moderno
+Renault,Captur,2021,47700,16900,LPG,Manual,Available,Etiqueta ECO
+Peugeot,3008,2019,76800,21900,Diesel,Automatic,Available,Interior tecnológico
+Citroën,C5 Aircross,2020,69100,22500,Diesel,Automatic,Available,Suspensión muy cómoda
+Opel,Grandland,2021,48900,25900,Hybrid,Automatic,Available,Buen consumo
+Nissan,X-Trail,2018,89500,20900,Gasoline,Automatic,Reserved,Amplio y versátil
+Mazda,MX-5,2019,41700,23900,Gasoline,Manual,Available,Capota en perfecto estado
+Toyota,GT86,2017,68300,25900,Gasoline,Manual,Available,Unidad muy cuidada
+BMW,Z4,2019,52200,34900,Gasoline,Automatic,Available,Ideal para disfrutar
+Mercedes-Benz,SLK 200,2016,74900,26900,Gasoline,Automatic,Available,Techo rígido eléctrico
+Audi,TT,2018,63700,28900,Gasoline,Automatic,Sold,Acabado deportivo
+Porsche,Macan,2017,96700,42900,Gasoline,Automatic,Reserved,Historial de mantenimiento
+Volvo,V40,2018,88100,15900,Diesel,Manual,Available,Muy seguro
+Toyota,Auris,2017,92700,14900,Hybrid,Automatic,Available,Fiabilidad contrastada
+Chevrolet,Cruze,2015,112000,8900,LPG,Manual,Available,Coste de uso bajo
+Dacia,Logan,2019,70600,9800,LPG,Manual,Available,Mucho maletero
+Renault,Kangoo,2018,103000,13900,Diesel,Manual,Available,Lista para trabajar
+Volkswagen,Caddy,2019,94600,16900,Diesel,Manual,Reserved,Doble puerta lateral
+Ford,Transit Connect,2020,81200,17900,Diesel,Manual,Available,Buen estado de carga
+Mercedes-Benz,Vito,2018,128000,25900,Diesel,Automatic,Available,Mantenimiento reciente
+Toyota,Proace,2019,116000,21900,Diesel,Manual,Sold,Funcionamiento perfecto
