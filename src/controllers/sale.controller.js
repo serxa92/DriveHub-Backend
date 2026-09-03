@@ -1,6 +1,23 @@
 const Sale = require("../models/sale.model");
 const Car = require("../models/car.model");
 
+// Mantengo el estado del coche según sus ventas activas.
+const syncCarStatus = async (carId) => {
+  const hasCompletedSale = await Sale.exists({
+    car: carId,
+    status: "Completed",
+  });
+  const hasPendingSale = hasCompletedSale
+    ? false
+    : await Sale.exists({ car: carId, status: "Pending" });
+
+  let status = "Available";
+  if (hasCompletedSale) status = "Sold";
+  else if (hasPendingSale) status = "Reserved";
+
+  await Car.findByIdAndUpdate(carId, { status });
+};
+
 // GET /sales
 const getSales = async (req, res) => {
   try {
@@ -46,22 +63,19 @@ const getSaleById = async (req, res) => {
 // POST /sales
 const createSale = async (req, res) => {
   try {
-    const { car, client, seller, salePrice, paymentMethod, status, notes } =
-      req.body;
+    const { car, client, salePrice, paymentMethod, status, notes } = req.body;
 
     const newSale = await Sale.create({
       car,
       client,
-      seller,
+      seller: req.user.id,
       salePrice,
       paymentMethod,
       status,
       notes,
     });
 
-    if (status === "Completed") {
-      await Car.findByIdAndUpdate(car, { status: "Sold" });
-    }
+    await syncCarStatus(newSale.car);
 
     const populatedSale = await Sale.findById(newSale._id)
       .populate("car")
@@ -81,26 +95,33 @@ const createSale = async (req, res) => {
 const updateSaleById = async (req, res) => {
   try {
     const { id } = req.params;
+    const sale = await Sale.findById(id);
 
-    const updatedSale = await Sale.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    })
-      .populate("car")
-      .populate("client")
-      .populate("seller", "username email role");
-
-    if (!updatedSale) {
+    if (!sale) {
       return res.status(404).json({
         message: "Sale not found",
       });
     }
 
-    if (updatedSale.status === "Completed") {
-      await Car.findByIdAndUpdate(updatedSale.car._id, { status: "Sold" });
-    }
+    const previousCar = sale.car.toString();
+    const updates = { ...req.body };
+    delete updates.seller;
 
-    return res.status(200).json(updatedSale);
+    Object.assign(sale, updates);
+    const updatedSale = await sale.save();
+    const affectedCars = new Set([
+      previousCar,
+      updatedSale.car.toString(),
+    ]);
+
+    await Promise.all([...affectedCars].map(syncCarStatus));
+
+    const populatedSale = await Sale.findById(updatedSale._id)
+      .populate("car")
+      .populate("client")
+      .populate("seller", "username email role");
+
+    return res.status(200).json(populatedSale);
   } catch (error) {
     return res.status(400).json({
       message: "Error updating sale",
@@ -121,6 +142,8 @@ const deleteSaleById = async (req, res) => {
         message: "Sale not found",
       });
     }
+
+    await syncCarStatus(deletedSale.car);
 
     return res.status(200).json({
       message: "Sale deleted successfully",
