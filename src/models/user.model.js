@@ -18,6 +18,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
+      select: false,
     },
     role: { type: String, enum: ["user", "admin"], default: "user" },
     image: {
@@ -31,7 +32,17 @@ const userSchema = new Schema(
     },
     cars: [{ type: mongoose.Schema.Types.ObjectId, ref: "Car" }], //Array de coches asociados al usuario
   },
-  { timestamps: true, versionKey: false },
+  {
+    timestamps: true,
+    versionKey: false,
+    // Evito que password salga al convertir cualquier usuario a JSON.
+    toJSON: {
+      transform: (_document, user) => {
+        delete user.password;
+        return user;
+      },
+    },
+  },
 );
 
 // Antes de guardar, si ha cambiado la contraseña, la encriptamos

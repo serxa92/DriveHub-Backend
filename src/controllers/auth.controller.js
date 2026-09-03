@@ -2,36 +2,106 @@ const jwt = require("jsonwebtoken");
 const cloudinary = require("cloudinary").v2;
 const User = require("../models/user.model");
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const removeUploadedAvatar = async (file) => {
+  if (!file || !file.filename) return;
+
+  try {
+    await cloudinary.uploader.destroy(file.filename);
+  } catch (error) {
+    console.error("Error eliminando avatar de Cloudinary:", error.message);
+  }
+};
+
+const getAvatarPublicId = (user) => {
+  if (user.imagePublicId) return user.imagePublicId;
+  if (!user.image || !user.image.includes("/upload/")) return "";
+
+  return user.image
+    .split("/upload/")[1]
+    .replace(/^v\d+\//, "")
+    .replace(/\.[^/.]+$/, "");
+};
+
 //Registramos un usuario nuevo
 const register = async (req, res) => {
+  let userCreated = false;
+
   try {
     const { username, email, password } = req.body;
+    const cleanUsername = typeof username === "string" ? username.trim() : "";
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
 
-    //Si se sube imagen, obtenemos la URL de Cloudinary
+    if (
+      !cleanUsername ||
+      !cleanEmail ||
+      typeof password !== "string" ||
+      !password
+    ) {
+      await removeUploadedAvatar(req.file);
+      return res.status(400).json({ message: "Faltan campos obligatorios" });
+    }
+
+    if (!emailPattern.test(cleanEmail)) {
+      await removeUploadedAvatar(req.file);
+      return res.status(400).json({ message: "Email inválido" });
+    }
+
+    if (password.length < 6) {
+      await removeUploadedAvatar(req.file);
+      return res
+        .status(400)
+        .json({ message: "La contraseña debe tener al menos 6 caracteres" });
+    }
+
+    const existingUser = await User.findOne({
+      $or: [{ email: cleanEmail }, { username: cleanUsername }],
+    }).select("email username");
+
+    if (existingUser) {
+      await removeUploadedAvatar(req.file);
+      const field = existingUser.email === cleanEmail ? "email" : "username";
+      return res.status(409).json({ message: `El ${field} ya está registrado` });
+    }
+
+    // Guardo la URL y el identificador que devuelve Cloudinary.
     const image = req.file ? req.file.path : "";
+    const imagePublicId = req.file ? req.file.filename : "";
 
-    //Creamos el usuario (la contraseña se encripta automáticamente en el modelo)
     const newUser = await User.create({
-      username,
-      email,
+      username: cleanUsername,
+      email: cleanEmail,
       password,
       image,
+      imagePublicId,
       role: "user",
     });
+    userCreated = true;
 
-    //Devolvemos el usuario sin la contraseña
     const userWithoutPassword = {
       _id: newUser._id,
       username: newUser.username,
       email: newUser.email,
       role: newUser.role,
       image: newUser.image,
+      imagePublicId: newUser.imagePublicId,
       cars: newUser.cars,
     };
 
     return res.status(201).json(userWithoutPassword);
   } catch (error) {
+    if (!userCreated) await removeUploadedAvatar(req.file);
     console.error("Error en el registro:", error);
+
+    if (error.code === 11000) {
+      return res.status(409).json({ message: "Email o username ya registrado" });
+    }
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
     return res
       .status(500)
       .json({ message: "Error registrando al usuario", error: error.message });
@@ -43,8 +113,19 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    //Buscamos el usuario por email
-    const user = await User.findOne({ email });
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      !email.trim() ||
+      !password
+    ) {
+      return res.status(400).json({ message: "Email y contraseña obligatorios" });
+    }
+
+    // Incluyo password sólo aquí para poder comprobarlo.
+    const user = await User.findOne({
+      email: email.trim().toLowerCase(),
+    }).select("+password");
 
     if (!user) {
       return res.status(401).json({ message: "Credenciales inválidas" });
@@ -73,6 +154,7 @@ const login = async (req, res) => {
       email: user.email,
       role: user.role,
       image: user.image,
+      imagePublicId: user.imagePublicId,
       cars: user.cars,
     };
 
@@ -149,10 +231,10 @@ const deleteUser = async (req, res) => {
         .json({ message: "No puedes eliminar la cuenta de otro usuario" });
     }
 
-    //Si tiene imagen en Cloudinary, la eliminamos
-    if (userToDelete.image && userToDelete.image.includes("cloudinary")) {
-      const publicId = userToDelete.image.split("/").pop().split(".")[0];
-      await cloudinary.uploader.destroy(`users/${publicId}`);
+    // Eliminamos el avatar usando su identificador de Cloudinary.
+    const avatarPublicId = getAvatarPublicId(userToDelete);
+    if (avatarPublicId) {
+      await cloudinary.uploader.destroy(avatarPublicId);
     }
 
     //Eliminamos el usuario de la base de datos
