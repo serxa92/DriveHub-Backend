@@ -1,81 +1,123 @@
+const mongoose = require("mongoose");
 const Car = require("../models/car.model");
 const User = require("../models/user.model");
+const Client = require("../models/client.model");
+const Sale = require("../models/sale.model");
 const { cloudinary } = require("../middlewares/upload");
+const {
+  RequestError,
+  buildCarData,
+  ensureObjectId,
+  handleControllerError,
+} = require("../utils/domainValidation");
+
+const removeCloudinaryFiles = async (files = []) => {
+  const validFiles = files.filter((file) => file && file.filename);
+  const results = await Promise.allSettled(
+    validFiles.map((file) => cloudinary.uploader.destroy(file.filename)),
+  );
+
+  results.forEach((result, index) => {
+    if (result.status === "rejected") {
+      console.error(
+        `No se pudo limpiar ${validFiles[index].filename} de Cloudinary`,
+      );
+    }
+  });
+};
+
+const getUploadedImages = (files = []) =>
+  files.map((file, index) => ({
+    url: file.path,
+    publicId: file.filename,
+    isCover: index === 0,
+  }));
 
 // GET /cars
 const getCars = async (req, res) => {
   try {
     const cars = await Car.find();
-    res.status(200).json(cars);
+    return res.status(200).json(cars);
   } catch (error) {
-    res.status(500).json({ error: "Error obteniendo todos los coches❌" });
+    return handleControllerError(res, error, "Error obteniendo los coches");
   }
 };
 
-// POST /cars (crea coche y lo asocia al usuario)
+// POST /cars
 const createCar = async (req, res) => {
+  let session;
+  let savedCar;
+  let committed = false;
+
   try {
-    const userId = req.user.id;
+    const carData = buildCarData(req.body);
+    const images = getUploadedImages(req.files);
+    session = await mongoose.startSession();
 
-    const images = req.files
-      ? req.files.map((file, index) => ({
-          url: file.path,
-          publicId: file.filename,
-          isCover: index === 0,
-        }))
-      : [];
+    await session.withTransaction(async () => {
+      [savedCar] = await Car.create(
+        [
+          {
+            ...carData,
+            images,
+            owner: req.user.id,
+            status: "Available",
+          },
+        ],
+        { session },
+      );
 
-    const savedCar = await Car.create({
-      ...req.body,
-      price: Number(req.body.price),
-      year: Number(req.body.year),
-      mileage: Number(req.body.mileage),
-      images,
-      owner: userId,
+      const owner = await User.findByIdAndUpdate(
+        req.user.id,
+        { $addToSet: { cars: savedCar._id } },
+        { session },
+      );
+      if (!owner) throw new RequestError(401, "Usuario no válido");
     });
+    committed = true;
 
     return res.status(201).json({
       data: savedCar,
       info: `Car created on: ${new Date(
-        savedCar.createdAt
+        savedCar.createdAt,
       ).toLocaleDateString("en-US")}`,
     });
   } catch (error) {
-    console.error("Error creating car:", error);
-
-    return res.status(500).json({
-      error: "Error creating car",
-      detail: error.message,
-    });
+    if (!committed) await removeCloudinaryFiles(req.files);
+    return handleControllerError(res, error, "Error creando el coche");
+  } finally {
+    if (session) await session.endSession();
   }
 };
-// =======================
+
 // GET /cars/:id
-// =======================
 const getCarById = async (req, res) => {
   try {
+    ensureObjectId(req.params.id);
     const car = await Car.findById(req.params.id);
 
     if (!car) {
-      return res.status(404).json({ error: "Coche no encontrado❌" });
+      return res.status(404).json({ message: "Coche no encontrado" });
     }
     return res.status(200).json(car);
   } catch (error) {
-    res.status(500).json({ error: "❌Error al obtener el coche" });
+    return handleControllerError(res, error, "Error obteniendo el coche");
   }
 };
-// =======================
+
 // PUT /cars/:id
-// =======================
 const updateCarById = async (req, res) => {
+  let saved = false;
+
   try {
+    ensureObjectId(req.params.id);
+    const updates = buildCarData(req.body, { partial: true });
     const car = await Car.findById(req.params.id);
 
     if (!car) {
-      return res.status(404).json({ message: "Coche no encontrado❌" });
+      throw new RequestError(404, "Coche no encontrado");
     }
 
-    const { images, ...updates } = req.body;
     Object.assign(car, updates);
 
     if (req.files && req.files.length > 0) {
@@ -85,85 +127,82 @@ const updateCarById = async (req, res) => {
         publicId: file.filename,
         isCover: !hasCover && index === 0,
       }));
-
       car.images.push(...newImages);
     }
 
     const updatedCar = await car.save();
-
+    saved = true;
     return res.status(200).json(updatedCar);
   } catch (error) {
-    res.status(500).json({
-      error: "❌ Error al actualizar el coche",
-    });
+    if (!saved) await removeCloudinaryFiles(req.files);
+    return handleControllerError(res, error, "Error actualizando el coche");
   }
 };
 
 // DELETE /cars/:id/images
 const deleteCarImage = async (req, res) => {
   try {
-    const { publicId } = req.body;
+    ensureObjectId(req.params.id);
+    const { publicId } = req.body || {};
 
-    if (!publicId) {
-      return res.status(400).json({ message: "publicId es obligatorio" });
+    if (typeof publicId !== "string" || !publicId.trim()) {
+      throw new RequestError(400, "publicId es obligatorio");
     }
 
     const car = await Car.findById(req.params.id);
+    if (!car) throw new RequestError(404, "Coche no encontrado");
 
-    if (!car) {
-      return res.status(404).json({ message: "Coche no encontrado ❌" });
-    }
-
+    const originalImages = car.images.map((image) => image.toObject());
     const imageIndex = car.images.findIndex(
       (image) => image.publicId === publicId,
     );
-
     if (imageIndex === -1) {
-      return res.status(404).json({ message: "Imagen no encontrada ❌" });
+      throw new RequestError(404, "Imagen no encontrada");
     }
 
     const wasCover = car.images[imageIndex].isCover;
-    await cloudinary.uploader.destroy(publicId);
     car.images.splice(imageIndex, 1);
 
     if (wasCover && car.images.length > 0) {
-      car.images.forEach((image) => {
-        image.isCover = false;
+      car.images.forEach((image, index) => {
+        image.isCover = index === 0;
       });
-      car.images[0].isCover = true;
     }
 
-    const updatedCar = await car.save();
-    return res.status(200).json(updatedCar);
+    await car.save();
+
+    try {
+      await cloudinary.uploader.destroy(publicId);
+    } catch (error) {
+      // Recupero la referencia si Cloudinary no pudo eliminar el archivo.
+      car.images = originalImages;
+      await car.save();
+      throw error;
+    }
+
+    return res.status(200).json(car);
   } catch (error) {
-    return res.status(500).json({
-      error: "❌ Error al eliminar la imagen",
-    });
+    return handleControllerError(res, error, "Error eliminando la imagen");
   }
 };
 
 // PUT /cars/:id/images/cover
 const setCarCover = async (req, res) => {
   try {
-    const { publicId } = req.body;
+    ensureObjectId(req.params.id);
+    const { publicId } = req.body || {};
 
-    if (!publicId) {
-      return res.status(400).json({ message: "publicId es obligatorio" });
+    if (typeof publicId !== "string" || !publicId.trim()) {
+      throw new RequestError(400, "publicId es obligatorio");
     }
 
     const car = await Car.findById(req.params.id);
-
-    if (!car) {
-      return res.status(404).json({ message: "Coche no encontrado ❌" });
-    }
+    if (!car) throw new RequestError(404, "Coche no encontrado");
 
     const imageExists = car.images.some(
       (image) => image.publicId === publicId,
     );
-
-    if (!imageExists) {
-      return res.status(404).json({ message: "Imagen no encontrada ❌" });
-    }
+    if (!imageExists) throw new RequestError(404, "Imagen no encontrada");
 
     car.images.forEach((image) => {
       image.isCover = image.publicId === publicId;
@@ -172,62 +211,62 @@ const setCarCover = async (req, res) => {
     const updatedCar = await car.save();
     return res.status(200).json(updatedCar);
   } catch (error) {
-    return res.status(500).json({
-      error: "❌ Error al cambiar la portada",
-    });
+    return handleControllerError(res, error, "Error cambiando la portada");
   }
 };
 
-// =======================
 // DELETE /cars/:id
-// =======================
 const deleteCarById = async (req, res) => {
+  let session;
+  let imageFiles = [];
+
   try {
-    const { id } = req.params;
+    ensureObjectId(req.params.id);
+    session = await mongoose.startSession();
 
-    const deletedCar = await Car.findByIdAndDelete(id);
+    await session.withTransaction(async () => {
+      const car = await Car.findById(req.params.id).session(session);
+      if (!car) throw new RequestError(404, "Coche no encontrado");
 
-    if (!deletedCar) {
-      return res.status(404).json({
-        message: "Car not found",
-      });
-    }
+      const hasSales = await Sale.exists({ car: car._id }).session(session);
+      if (hasSales) {
+        throw new RequestError(409, "No se puede eliminar un coche con ventas");
+      }
 
-    if (deletedCar.images && deletedCar.images.length > 0) {
-      await Promise.all(
-        deletedCar.images.map((image) =>
-          cloudinary.uploader.destroy(image.publicId)
-        )
+      imageFiles = car.images.map((image) => ({ filename: image.publicId }));
+      await car.deleteOne({ session });
+      await Client.updateMany(
+        { interestedCars: car._id },
+        { $pull: { interestedCars: car._id } },
+        { session },
       );
-    }
+      await User.updateMany(
+        { cars: car._id },
+        { $pull: { cars: car._id } },
+        { session },
+      );
+    });
 
-    return res.status(200).json({
-      message: "Car deleted successfully",
-    });
+    await removeCloudinaryFiles(imageFiles);
+    return res.status(200).json({ message: "Coche eliminado correctamente" });
   } catch (error) {
-    return res.status(500).json({
-      message: "Error deleting car",
-      error: error.message,
-    });
+    return handleControllerError(res, error, "Error eliminando el coche");
+  } finally {
+    if (session) await session.endSession();
   }
 };
 
-// =======================
-// GET by brand /cars/brand/:brand
-// =======================
-
+// GET /cars/brand/:brand
 const getCarByBrand = async (req, res) => {
   try {
     const brand = req.params.brand.toLowerCase();
     const cars = await Car.find({ brand });
     if (cars.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No hay coches de esa marca en la base de datos ❌" });
+      return res.status(404).json({ message: "No hay coches de esa marca" });
     }
     return res.status(200).json(cars);
   } catch (error) {
-    res.status(500).json({ error: "Error encontrando los coches" });
+    return handleControllerError(res, error, "Error buscando los coches");
   }
 };
 

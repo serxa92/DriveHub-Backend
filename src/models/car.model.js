@@ -27,27 +27,39 @@ const carSchema = new Schema(
     brand: {
       type: String,
       default: "marca desconocida",
+      trim: true,
+      maxlength: 80,
       set: (value) => value.toLowerCase(),
     },
 
     model: {
       type: String,
       default: "Modelo desconocido",
+      trim: true,
+      maxlength: 100,
     },
 
     year: {
       type: Number,
       default: 2000,
+      min: 1886,
+      max: new Date().getFullYear() + 1,
+      validate: {
+        validator: Number.isInteger,
+        message: "El año debe ser un número entero",
+      },
     },
 
     mileage: {
       type: Number,
       default: 0,
+      min: 0,
     },
 
     price: {
       type: Number,
       required: true,
+      min: 0.01,
     },
 
     fuel: {
@@ -71,6 +83,7 @@ const carSchema = new Schema(
     notes: {
       type: String,
       default: "",
+      maxlength: 2000,
     },
 
     images: {

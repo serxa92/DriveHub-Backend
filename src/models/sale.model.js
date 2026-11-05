@@ -25,6 +25,7 @@ const saleSchema = new Schema(
     salePrice: {
       type: Number,
       required: true,
+      min: 0.01,
     },
 
     paymentMethod: {
@@ -47,6 +48,7 @@ const saleSchema = new Schema(
     notes: {
       type: String,
       default: "",
+      maxlength: 1000,
     },
   },
   {
