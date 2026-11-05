@@ -1,107 +1,115 @@
+const mongoose = require("mongoose");
 const Client = require("../models/client.model");
+const Car = require("../models/car.model");
+const Sale = require("../models/sale.model");
+const {
+  RequestError,
+  buildClientData,
+  ensureObjectId,
+  handleControllerError,
+} = require("../utils/domainValidation");
+
+const validateInterestedCars = async (carIds) => {
+  if (!carIds || carIds.length === 0) return;
+
+  const existingCars = await Car.countDocuments({ _id: { $in: carIds } });
+  if (existingCars !== carIds.length) {
+    throw new RequestError(400, "Algún interestedCar no existe");
+  }
+};
 
 // Obtener todos los clientes
 const getClients = async (req, res) => {
   try {
     const clients = await Client.find().populate("interestedCars");
-
     return res.status(200).json(clients);
   } catch (error) {
-    return res.status(500).json({
-      message: "Error retrieving clients",
-      error: error.message,
-    });
+    return handleControllerError(res, error, "Error obteniendo clientes");
   }
 };
 
 // Obtener un cliente por ID
 const getClientById = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const client = await Client.findById(id).populate("interestedCars");
+    ensureObjectId(req.params.id);
+    const client = await Client.findById(req.params.id).populate(
+      "interestedCars",
+    );
 
     if (!client) {
-      return res.status(404).json({
-        message: "Client not found",
-      });
+      return res.status(404).json({ message: "Cliente no encontrado" });
     }
 
     return res.status(200).json(client);
   } catch (error) {
-    return res.status(500).json({
-      message: "Error retrieving client",
-      error: error.message,
-    });
+    return handleControllerError(res, error, "Error obteniendo el cliente");
   }
 };
 
-// Crear cliente
+// El formulario público sólo crea datos de contacto.
 const createClient = async (req, res) => {
   try {
-    const newClient = new Client(req.body);
+    const clientData = buildClientData(req.body);
+    await validateInterestedCars(clientData.interestedCars);
 
-    const savedClient = await newClient.save();
-
+    const savedClient = await Client.create(clientData);
     return res.status(201).json(savedClient);
   } catch (error) {
-    return res.status(400).json({
-      message: "Error creating client",
-      error: error.message,
-    });
+    return handleControllerError(res, error, "Error creando el cliente");
   }
 };
 
 // Actualizar cliente
 const updateClientById = async (req, res) => {
   try {
-    const { id } = req.params;
+    ensureObjectId(req.params.id);
+    const updates = buildClientData(req.body, {
+      partial: true,
+      allowStatus: true,
+    });
+    await validateInterestedCars(updates.interestedCars);
 
     const updatedClient = await Client.findByIdAndUpdate(
-      id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+      req.params.id,
+      updates,
+      { new: true, runValidators: true },
+    ).populate("interestedCars");
 
     if (!updatedClient) {
-      return res.status(404).json({
-        message: "Client not found",
-      });
+      return res.status(404).json({ message: "Cliente no encontrado" });
     }
 
     return res.status(200).json(updatedClient);
   } catch (error) {
-    return res.status(400).json({
-      message: "Error updating client",
-      error: error.message,
-    });
+    return handleControllerError(res, error, "Error actualizando el cliente");
   }
 };
 
-// Eliminar cliente
+// No elimino clientes que forman parte del historial de ventas.
 const deleteClientById = async (req, res) => {
+  let session;
+
   try {
-    const { id } = req.params;
+    ensureObjectId(req.params.id);
+    session = await mongoose.startSession();
 
-    const deletedClient = await Client.findByIdAndDelete(id);
+    await session.withTransaction(async () => {
+      const client = await Client.findById(req.params.id).session(session);
+      if (!client) throw new RequestError(404, "Cliente no encontrado");
 
-    if (!deletedClient) {
-      return res.status(404).json({
-        message: "Client not found",
-      });
-    }
+      const hasSales = await Sale.exists({ client: client._id }).session(session);
+      if (hasSales) {
+        throw new RequestError(409, "No se puede eliminar un cliente con ventas");
+      }
 
-    return res.status(200).json({
-      message: "Client deleted successfully",
+      await client.deleteOne({ session });
     });
+
+    return res.status(200).json({ message: "Cliente eliminado correctamente" });
   } catch (error) {
-    return res.status(500).json({
-      message: "Error deleting client",
-      error: error.message,
-    });
+    return handleControllerError(res, error, "Error eliminando el cliente");
+  } finally {
+    if (session) await session.endSession();
   }
 };
 
