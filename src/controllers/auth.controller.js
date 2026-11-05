@@ -29,7 +29,7 @@ const register = async (req, res) => {
   let userCreated = false;
 
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password } = req.body || {};
     const cleanUsername = typeof username === "string" ? username.trim() : "";
     const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
 
@@ -99,19 +99,17 @@ const register = async (req, res) => {
     }
 
     if (error.name === "ValidationError") {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Datos de usuario no válidos" });
     }
 
-    return res
-      .status(500)
-      .json({ message: "Error registrando al usuario", error: error.message });
+    return res.status(500).json({ message: "Error registrando al usuario" });
   }
 };
 
 //Iniciamos sesión y generamos el token JWT
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
 
     if (
       typeof email !== "string" ||
@@ -161,9 +159,7 @@ const login = async (req, res) => {
     return res.status(200).json({ token, user: userWithoutPassword });
   } catch (error) {
     console.error("Error en el login:", error);
-    return res
-      .status(500)
-      .json({ message: "Error iniciando sesión", error: error.message });
+    return res.status(500).json({ message: "Error iniciando sesión" });
   }
 };
 
@@ -171,7 +167,7 @@ const login = async (req, res) => {
 const changeRole = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { role } = req.body;
+    const { role } = req.body || {};
     const currentUserId = req.user.id;
 
     //Comprobamos que no intente cambiar su propio rol
@@ -206,9 +202,7 @@ const changeRole = async (req, res) => {
     });
   } catch (error) {
     console.error("Error cambiando rol:", error);
-    return res
-      .status(500)
-      .json({ message: "Error cambiando rol", error: error.message });
+    return res.status(500).json({ message: "Error cambiando rol" });
   }
 };
 
@@ -243,16 +237,14 @@ const deleteUser = async (req, res) => {
     return res.status(200).json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
     console.error("Error eliminando usuario:", error);
-    return res
-      .status(500)
-      .json({ message: "Error eliminando usuario", error: error.message });
+    return res.status(500).json({ message: "Error eliminando usuario" });
   }
 };
 
 //Añadimos un coche al array del usuario (sin duplicados)
 const addCar = async (req, res) => {
   try {
-    const { carId } = req.body;
+    const { carId } = req.body || {};
     const userId = req.user.id;
 
     const user = await User.findById(userId);
@@ -271,9 +263,7 @@ const addCar = async (req, res) => {
       .json({ message: "Coche añadido correctamente", cars: user.cars });
   } catch (error) {
     console.error("Error añadiendo coche:", error);
-    return res
-      .status(500)
-      .json({ message: "Error añadiendo coche", error: error.message });
+    return res.status(500).json({ message: "Error añadiendo coche" });
   }
 };
 

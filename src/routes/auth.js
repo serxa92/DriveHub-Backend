@@ -10,12 +10,13 @@ const {
 } = require("../controllers/auth.controller");
 const auth = require("../middlewares/auth");
 const { upload } = require("../middlewares/upload");
+const { authLimiter } = require("../middlewares/rateLimits");
 
 //Registramos un usuario nuevo (con subida de imagen a Cloudinary)
-router.post("/register", upload.single("image"), register);
+router.post("/register", authLimiter, upload.single("image"), register);
 
 //Iniciamos sesión y obtenemos el token JWT
-router.post("/login", login);
+router.post("/login", authLimiter, login);
 
 //Cambiamos el rol de un usuario (solo admin)
 router.put("/users/:userId/role", auth, changeRole);

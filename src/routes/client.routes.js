@@ -10,14 +10,15 @@ const {
 } = require("../controllers/client.controller");
 
 const auth = require("../middlewares/auth");
+const isAdmin = require("../middlewares/isAdmin");
+const { contactLimiter } = require("../middlewares/rateLimits");
 
-// Rutas de clientes
-// público: formulario de contacto / interés
-clientRouter.post("/", createClient); 
+// El alta sigue pública para el formulario de contacto.
+clientRouter.post("/", contactLimiter, createClient);
 
-clientRouter.get("/", auth, getClients); // privado
-clientRouter.get("/:id", auth, getClientById); // privado
-clientRouter.put("/:id", auth, updateClientById); // privado
-clientRouter.delete("/:id", auth, deleteClientById); // privado
+clientRouter.get("/", auth, isAdmin, getClients);
+clientRouter.get("/:id", auth, isAdmin, getClientById);
+clientRouter.put("/:id", auth, isAdmin, updateClientById);
+clientRouter.delete("/:id", auth, isAdmin, deleteClientById);
 
 module.exports = clientRouter;

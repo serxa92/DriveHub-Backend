@@ -8,7 +8,8 @@
     "seed": "node src/utils/seedCars.js",
     "seed:clients": "node src/utils/seedClients.js",
     "seed:sales": "node src/utils/seedSales.js",
-    "seed:all": "node src/utils/seedAll.js"
+    "seed:all": "node src/utils/seedAll.js",
+    "test": "node --test"
   },
   "keywords": [],
   "author": "Sergio Agulla <serxa92@hotmail.com>",
@@ -20,6 +21,8 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.3",
+    "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.0",
     "multer": "^2.0.2",
